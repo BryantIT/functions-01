@@ -17,7 +17,7 @@ const getPlayerChoice = () => {
     selection !== SCISSORS
   ) {
     alert(`Invalid choice! We chose ${DEFAULT_USER_CHOICE} for you!`)
-    return DEFAULT_USER_CHOICE
+    return
   }
   return selection
 }
@@ -33,7 +33,7 @@ const getComputerChoice = () => {
   }
 }
 
-const getWinner = (cChoice, pChoice) => {
+const getWinner = (cChoice, pChoice = DEFAULT_USER_CHOICE) => {
   if (cChoice === pChoice) {
     return RESULT_DRAW
   } else if (
@@ -55,11 +55,16 @@ startGameBtn.addEventListener('click', () => {
   console.log('Game is starting!')
   const playerSelection = getPlayerChoice()
   const computerSelection = getComputerChoice()
-  const winner = getWinner(playerSelection, computerSelection)
-  let message = `You picked ${playerSelection}, computer picked ${computerSelection} therefore you `
+  let winner
+  if (playerSelection) {
+    winner = getWinner(playerSelection, computerSelection)
+  } else {
+    winner = getWinner(computerSelection)
+  }
+  let message = `You picked ${playerSelection || DEFAULT_USER_CHOICE}, computer picked ${computerSelection} therefore you `
   if (winner === RESULT_DRAW) {
     message = message + 'had a draw.'
-  } else if (winner === RESULT_PLAYER_WINS){
+  } else if (winner === RESULT_PLAYER_WINS) {
     message = message + 'won.'
   } else {
     message = message + 'lost.'
